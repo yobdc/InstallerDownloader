@@ -10,7 +10,6 @@ import org.jsoup.select.Elements;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.concurrent.CountDownLatch;
 
 /**
@@ -60,10 +59,10 @@ public class App {
                             Element fileElem = fileElems.get(i);
                             String fileuri = fileElem.attr("href");
                             String filen = fileElem.text();
-                            if (filen.contains(".exe") || filen.contains(".zip")) {
+                            if ((filen.contains(".exe") || filen.contains(".zip")) && filen.contains("BLD")) {
                                 downloadFile(
                                         fileuri,
-                                        path + "\\download\\",
+                                        path,
                                         fileuri.split("//")[1].split("/")[fileuri.split("//")[1].split("/").length - 1]
                                 );
                             }
@@ -86,6 +85,12 @@ public class App {
         }
     }
 
+    /**
+     *  下载文件
+     * @param uri ：下载的URL路径
+     * @param path ：保存到本地的文件夹路径
+     * @param filename ： 保存文件的命名名字
+     */
     private static void downloadFile(String uri, String path, String filename) {
         try {
             String fileName = path + "\\" + filename;
